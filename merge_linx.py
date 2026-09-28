@@ -78,7 +78,6 @@ def process_app(apps_root_path, app_name, export_dir, should_pack):
     if not os.path.exists(default_dir):
         os.makedirs(default_dir)
 
-    # --- ЧАСТЬ 1: Обработка файлов .conf ---
     for filename in os.listdir(local_dir):
         local_file = os.path.join(local_dir, filename)
         
@@ -127,7 +126,6 @@ def process_app(apps_root_path, app_name, export_dir, should_pack):
             f.write("# Изменения перенесены в default скриптом\n")
         print(f"     [OK] Файл local\\{filename} очищен.")
 
-    # --- ЧАСТЬ 2: Перенос папки data ---
     local_data_dir = os.path.join(local_dir, 'data')
     if os.path.exists(local_data_dir) and os.path.isdir(local_data_dir):
         print(f"  -> Обнаружена папка UI/данных: local\\data")
@@ -156,7 +154,6 @@ def process_app(apps_root_path, app_name, export_dir, should_pack):
         except Exception as e:
             print(f"     [Предупреждение] Не удалось удалить папку local\\data: {e}")
 
-    # --- ЧАСТЬ 3: Упаковка приложения (если выбран этот вариант) ---
     if should_pack:
         pack_app_to_tar(apps_root_path, app_name, export_dir)
 
@@ -189,9 +186,7 @@ if __name__ == "__main__":
         print("[-] Неверный выбор или ничего не выбрано. Выход.")
         sys.exit(0)
         
-    # Новый интерактивный вопрос про упаковку
     pack_input = input("\nНужно ли упаковать выбранные приложения в .tar.gz архив? [Y/n]: ").strip().lower()
-    # Если нажали Enter или ввели 'y'/'yes' — пакуем
     pack_choice = pack_input in ('', 'y', 'yes')
         
     print(f"\n[*] Выбрано приложений для обработки: {len(chosen_indices)}")

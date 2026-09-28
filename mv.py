@@ -6,7 +6,6 @@ import configparser
 
 APPS_DIR = "/opt/splunk/etc/apps"
 
-# Черный список системных приложений Splunk
 BLACKLIST_APPS = {
     'framework', 'gettingstarted', 'launcher', 'learned', 'search', 
     'splunk_monitoring_console', 'splunk_httpinput', 'splunk_instrumentation',
@@ -138,7 +137,6 @@ def process_conf_files(source_app, target_app):
                 print(f"     [-] Пропущено.")
                 continue
             
-            # Назначение папки в Target
             target_folder = ask_choice(
                 f"     Куда записать станзу в приложении '{target_app}'?", 
                 ["local", "default"]
@@ -160,7 +158,6 @@ def process_conf_files(source_app, target_app):
                 target_config.write(cf, space_around_delimiters=False)
             print(f"     [✓] Записано в {target_folder}/{file_name}")
 
-            # Решение судьбы исходной станзы
             action = ask_choice(
                 "     Что сделать с исходной станзой?", 
                 ["Закомментировать (#)", "Затереть (Удалить полностью)", "Оставить без изменений"]
@@ -193,7 +190,6 @@ def process_xml_files(source_app, target_app, sub_path, label):
             print(f"     [-] Пропущено.")
             continue
             
-        # Выбор папки назначения для XML
         target_folder = ask_choice(
             f"     Куда скопировать файл в целевом приложении '{target_app}'?", 
             ["local", "default"]
@@ -206,7 +202,6 @@ def process_xml_files(source_app, target_app, sub_path, label):
             shutil.copy2(s_item, t_item)
             print(f"     [✓] Скопировано в {target_folder}/.../{item}")
             
-            # Очистка источника
             if ask_user("     Удалить оригинальный XML-файл из исходного приложения?"):
                 os.remove(s_item)
                 print(f"     [x] Оригинальный файл '{item}' успешно удален.")
@@ -214,14 +209,11 @@ def process_xml_files(source_app, target_app, sub_path, label):
             print(f" [!] Ошибка при работе с файлом {item}: {e}", file=sys.stderr)
 
 def main():
-    # Исполнение последовательности
     source_app, target_app = scan_and_select_apps()
     print(f"\n[СТАРТ] Интерактивный перенос данных из '{source_app}' в '{target_app}'\n")
 
-    # Перенос конфигураций
     process_conf_files(source_app, target_app)
 
-    # Перенос интерфейса
     print("\n=== РАБОТА С ЭЛЕМЕНТАМИ ИНТЕРФЕЙСА (XML) ===")
     process_xml_files(source_app, target_app, "data/ui/views", "Views (Дашборды)")
     process_xml_files(source_app, target_app, "data/ui/nav", "Nav (Меню)")

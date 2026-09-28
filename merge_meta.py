@@ -3,7 +3,6 @@ import shutil
 import re
 import sys
 
-# ПУТЬ ПО УМОЛЧАНИЮ К SPLUNK (измените, если у вас другой путь)
 SPLUNK_APPS_DIR = "/opt/splunk/etc/apps"
 
 def parse_meta_body(body_text):
@@ -90,7 +89,6 @@ def merge_and_move_stanza(app_path, stanza_name):
     local_meta_path = os.path.join(app_path, 'metadata', 'local.meta')
     default_meta_path = os.path.join(app_path, 'metadata', 'default.meta')
 
-    # Создание бэкапов
     shutil.copy2(local_meta_path, local_meta_path + '.bak')
     if os.path.exists(default_meta_path):
         shutil.copy2(default_meta_path, default_meta_path + '.bak')
