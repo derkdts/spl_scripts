@@ -37,6 +37,7 @@ services:
       - SPLUNK_START_ARGS=--accept-license
       - SPLUNK_PASSWORD=adminadmin
       - SPLUNK_ROLE=splunk_search_head
+      - SPLUNK_SERVER_NAME=splunk-sh1  
       - SPLUNK_SHC_MEMBER=true
       - SPLUNK_SHC_SECRET=my_shc_secret_phrase
       - SPLUNK_SHC_DEPLOYER_URL=https://splunk-deployer:8089
@@ -54,6 +55,7 @@ services:
       - SPLUNK_START_ARGS=--accept-license
       - SPLUNK_PASSWORD=adminadmin
       - SPLUNK_ROLE=splunk_search_head
+      - SPLUNK_SERVER_NAME=splunk-sh2
       - SPLUNK_SHC_MEMBER=true
       - SPLUNK_SHC_SECRET=my_shc_secret_phrase
       - SPLUNK_SHC_DEPLOYER_URL=https://splunk-deployer:8089
@@ -71,6 +73,7 @@ services:
       - SPLUNK_START_ARGS=--accept-license
       - SPLUNK_PASSWORD=adminadmin
       - SPLUNK_ROLE=splunk_search_head
+      - SPLUNK_SERVER_NAME=splunk-sh3
       - SPLUNK_SHC_MEMBER=true
       - SPLUNK_SHC_SECRET=my_shc_secret_phrase
       - SPLUNK_SHC_DEPLOYER_URL=https://splunk-deployer:8089
