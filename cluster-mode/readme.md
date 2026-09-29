@@ -25,10 +25,14 @@ docker logs -f splunk-sh1
 Включаем роль хранения данных (peer) на индексаторах и задаем порт репликации логов:
 
 # Настройка первой ноды хранения
-```docker exec -it splunk-idx1 sudo /opt/splunk/bin/splunk edit cluster-config  -auth admin:adminadmin   -mode peer  -master_uri https://splunk-deployer:8089   -replication_port 8080   -secret my_indexer_cluster_secret```
+```
+docker exec -it splunk-idx1 sudo /opt/splunk/bin/splunk edit cluster-config  -auth admin:adminadmin   -mode peer  -master_uri https://splunk-deployer:8089   -replication_port 8080   -secret my_indexer_cluster_secret
+```
 
 # Настройка второй ноды хранения
-```docker exec -it splunk-idx2 sudo /opt/splunk/bin/splunk edit cluster-config   -auth admin:adminadmin   -mode peer   -master_uri https://splunk-deployer:8089   -replication_port 8080   -secret my_indexer_cluster_secret```
+```
+docker exec -it splunk-idx2 sudo /opt/splunk/bin/splunk edit cluster-config   -auth admin:adminadmin   -mode peer   -master_uri https://splunk-deployer:8089   -replication_port 8080   -secret my_indexer_cluster_secret
+```
 
 # Перезапуск процессов для применения роли
 ```
@@ -38,9 +42,11 @@ docker exec -it splunk-idx2 sudo /opt/splunk/bin/splunk restart
 ## Шаг 2. Включение Raft-интерфейсов на Search Head нодах (sh)
 Активируем встроенный движок кластеризации на поисковых головах и выделяем порт репликации артефактов (8100):
 
-- ```docker exec -it splunk-sh1 sudo /opt/splunk/bin/splunk init shcluster-config -auth admin:adminadmin -mgmt_uri https://splunk-sh1:8089 -replication_port 8100 -replication_factor 3 -secret my_shc_secret_phrase -conf_deploy_fetch_url https://splunk-deployer:8089```
-- ```docker exec -it splunk-sh2 sudo /opt/splunk/bin/splunk init shcluster-config -auth admin:adminadmin -mgmt_uri https://splunk-sh2:8089 -replication_port 8100 -replication_factor 3 -secret my_shc_secret_phrase -conf_deploy_fetch_url https://splunk-deployer:8089```
-- ```docker exec -it splunk-sh3 sudo /opt/splunk/bin/splunk init shcluster-config -auth admin:adminadmin -mgmt_uri https://splunk-sh3:8089 -replication_port 8100 -replication_factor 3 -secret my_shc_secret_phrase -conf_deploy_fetch_url https://splunk-deployer:8089```
+```
+docker exec -it splunk-sh1 sudo /opt/splunk/bin/splunk init shcluster-config -auth admin:adminadmin -mgmt_uri https://splunk-sh1:8089 -replication_port 8100 -replication_factor 3 -secret my_shc_secret_phrase -conf_deploy_fetch_url https://splunk-deployer:8089
+docker exec -it splunk-sh2 sudo /opt/splunk/bin/splunk init shcluster-config -auth admin:adminadmin -mgmt_uri https://splunk-sh2:8089 -replication_port 8100 -replication_factor 3 -secret my_shc_secret_phrase -conf_deploy_fetch_url https://splunk-deployer:8089
+docker exec -it splunk-sh3 sudo /opt/splunk/bin/splunk init shcluster-config -auth admin:adminadmin -mgmt_uri https://splunk-sh3:8089 -replication_port 8100 -replication_factor 3 -secret my_shc_secret_phrase -conf_deploy_fetch_url https://splunk-deployer:8089
+```
 # Перезапуск процессов для открытия портов
 ```
 docker exec -it splunk-sh1 sudo /opt/splunk/bin/splunk restart
@@ -78,12 +84,16 @@ docker exec -it splunk-sh3 sudo /opt/splunk/bin/splunk add shcluster-member -cur
 
    1. Проверка Search Head кластера (выполнять на splunk-sh1):
    
-   ```docker exec -it splunk-sh1 sudo /opt/splunk/bin/splunk show shcluster-status -auth admin:adminadmin```
+   ```
+   docker exec -it splunk-sh1 sudo /opt/splunk/bin/splunk show shcluster-status -auth admin:adminadmin
+   ```
    
    Ожидаемый статус: Stable, в списке участников (Members) должны быть три ноды с именами контейнеров.
    2. Проверка Индексаторов (выполнять строго на splunk-deployer):
    
-   ```docker exec -it splunk-deployer sudo /opt/splunk/bin/splunk list cluster-peers -auth admin:adminadmin```
+   ```
+   docker exec -it splunk-deployer sudo /opt/splunk/bin/splunk list cluster-peers -auth admin:adminadmin
+   ```
    
    Ожидаемый статус: Обе ноды splunk-idx1 и splunk-idx2 должны иметь статус Up.
 
