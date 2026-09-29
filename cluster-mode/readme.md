@@ -58,7 +58,9 @@ docker exec -it splunk-sh3 sudo /opt/splunk/bin/splunk restart
 ## Шаг 3. Запуск Bootstrap и сборка SH-кластера
 Выбираем первый Search Head (splunk-sh1) в качестве капитана:
 
-```docker exec -it splunk-sh1 sudo /opt/splunk/bin/splunk bootstrap shcluster-captain   -servers_list "https://splunk-sh1:8089,https://splunk-sh2:8089,https://splunk-sh3:8089"   -auth admin:adminadmin```
+```
+docker exec -it splunk-sh1 sudo /opt/splunk/bin/splunk bootstrap shcluster-captain   -servers_list "https://splunk-sh1:8089,https://splunk-sh2:8089,https://splunk-sh3:8089"   -auth admin:adminadmin
+```
 
 Если ноды sh2 и sh3 не появились в статусе автоматически в течение минуты, принудительно добавьте их к капитану:
 ```
