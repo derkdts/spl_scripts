@@ -25,15 +25,16 @@ docker logs -f splunk-sh1
 Включаем роль хранения данных (peer) на индексаторах и задаем порт репликации логов:
 
 # Настройка первой ноды хранения
-docker exec -it splunk-idx1 sudo /opt/splunk/bin/splunk edit cluster-config  -auth admin:adminadmin   -mode peer  -master_uri https://splunk-deployer:8089   -replication_port 8080   -secret my_indexer_cluster_secret
+```docker exec -it splunk-idx1 sudo /opt/splunk/bin/splunk edit cluster-config  -auth admin:adminadmin   -mode peer  -master_uri https://splunk-deployer:8089   -replication_port 8080   -secret my_indexer_cluster_secret```
 
 # Настройка второй ноды хранения
-docker exec -it splunk-idx2 sudo /opt/splunk/bin/splunk edit cluster-config   -auth admin:adminadmin   -mode peer   -master_uri https://splunk-deployer:8089   -replication_port 8080   -secret my_indexer_cluster_secret
+```docker exec -it splunk-idx2 sudo /opt/splunk/bin/splunk edit cluster-config   -auth admin:adminadmin   -mode peer   -master_uri https://splunk-deployer:8089   -replication_port 8080   -secret my_indexer_cluster_secret```
 
 # Перезапуск процессов для применения роли
+```
 docker exec -it splunk-idx1 sudo /opt/splunk/bin/splunk restart
 docker exec -it splunk-idx2 sudo /opt/splunk/bin/splunk restart
-
+```
 ## Шаг 2. Включение Raft-интерфейсов на Search Head нодах (sh)
 Активируем встроенный движок кластеризации на поисковых головах и выделяем порт репликации артефактов (8100):
 
