@@ -16,7 +16,7 @@ services:
       - splunk-etc:/opt/splunk/etc
 
   nginx:
-    image: nginx:latest
+    image: nginx:alpine
     container_name: splunk_nginx
     ports:
       - "80:80"
