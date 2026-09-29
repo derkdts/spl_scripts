@@ -1,0 +1,82 @@
+version: '3.8'
+
+networks:
+  splunk-net:
+    driver: bridge
+
+services:
+  splunk-lb:
+    image: nginx:alpine
+    container_name: splunk-lb
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - "80:80"
+    depends_on:
+      - splunk-sh1
+      - splunk-sh2
+      - splunk-sh3
+    networks:
+      - splunk-net
+
+  splunk-deployer:
+    image: splunk/splunk:9.0.9
+    container_name: splunk-deployer
+    environment:
+      - SPLUNK_START_ARGS=--accept-license
+      - SPLUNK_PASSWORD=adminadmin
+      - SPLUNK_ROLE=splunk_deployer
+      - SPLUNK_SHC_SECRET=my_shc_secret_phrase
+    networks:
+      - splunk-net
+
+  splunk-sh1:
+    image: splunk/splunk:9.0.9
+    container_name: splunk-sh1
+    environment:
+      - SPLUNK_START_ARGS=--accept-license
+      - SPLUNK_PASSWORD=adminadmin
+      - SPLUNK_ROLE=splunk_search_head
+      - SPLUNK_SHC_MEMBER=true
+      - SPLUNK_SHC_SECRET=my_shc_secret_phrase
+      - SPLUNK_SHC_DEPLOYER_URL=https://splunk-deployer:8089
+      - SPLUNK_SHC_MGMT_URI=https://splunk-sh1:8089
+      - SPLUNK_WEB_TRUSTED_IP_HEADER=x-forwarded-for
+    depends_on:
+      - splunk-deployer
+    networks:
+      - splunk-net
+
+  splunk-sh2:
+    image: splunk/splunk:9.0.9
+    container_name: splunk-sh2
+    environment:
+      - SPLUNK_START_ARGS=--accept-license
+      - SPLUNK_PASSWORD=adminadmin
+      - SPLUNK_ROLE=splunk_search_head
+      - SPLUNK_SHC_MEMBER=true
+      - SPLUNK_SHC_SECRET=my_shc_secret_phrase
+      - SPLUNK_SHC_DEPLOYER_URL=https://splunk-deployer:8089
+      - SPLUNK_SHC_MGMT_URI=https://splunk-sh2:8089
+      - SPLUNK_WEB_TRUSTED_IP_HEADER=x-forwarded-for
+    depends_on:
+      - splunk-deployer
+    networks:
+      - splunk-net
+
+  splunk-sh3:
+    image: splunk/splunk:9.0.9
+    container_name: splunk-sh3
+    environment:
+      - SPLUNK_START_ARGS=--accept-license
+      - SPLUNK_PASSWORD=adminadmin
+      - SPLUNK_ROLE=splunk_search_head
+      - SPLUNK_SHC_MEMBER=true
+      - SPLUNK_SHC_SECRET=my_shc_secret_phrase
+      - SPLUNK_SHC_DEPLOYER_URL=https://splunk-deployer:8089
+      - SPLUNK_SHC_MGMT_URI=https://splunk-sh3:8089
+      - SPLUNK_WEB_TRUSTED_IP_HEADER=x-forwarded-for
+    depends_on:
+      - splunk-deployer
+    networks:
+      - splunk-net
