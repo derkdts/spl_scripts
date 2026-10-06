@@ -227,7 +227,7 @@ python.version = python3
 >    logging.info(f"Параметры запуска: apps={param_apps}, pack={param_pack}")
 >
 >    target_path = "/opt/splunk/etc/apps"
->    export_packages_dir = "/opt/splunk/share/app_package"
+>    export_packages_dir = "/opt/splunk/etc/apps/release_man/appserver/packages"
 >    os.makedirs(export_packages_dir, exist_ok=True)
 >
 >    fieldnames = ['app_name', 'actions_taken', 'packing_status', 'error']
